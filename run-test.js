@@ -10,7 +10,7 @@ module.exports = function(deps) {
     server_name: deps.config().server_name
   };
 
-  function runTest(email, password, project, branch, message, deploy) {
+  function runTest(email, password, project, branch, message, deploy, options) {
     if(!email || !password || !project){
       var rl = readline.createInterface({
         input: process.stdin,
@@ -94,6 +94,18 @@ module.exports = function(deps) {
         }
       },
 
+      function getOptions() {
+        var next = this;
+        if (options) {
+          next();
+        } else {
+          rl.question('Additional options passed to job (Must be a stringified JSON): ', function (op) {
+            options = op;
+            next();
+          })
+        }
+      },
+
       function runTest() {
         runOpts.email = email;
         runOpts.password = password;
@@ -101,6 +113,7 @@ module.exports = function(deps) {
         runOpts.project = project;
         runOpts.branch = branch;
         runOpts.deploy = deploy;
+        runOpts.options = options;
         run(runOpts);
       }
       );
@@ -112,6 +125,7 @@ module.exports = function(deps) {
       runOpts.project = project;
       runOpts.branch = branch;
       runOpts.deploy = deploy;
+      runOpts.options = options;
       run(runOpts);
     }
   }

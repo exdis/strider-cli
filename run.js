@@ -10,6 +10,7 @@ function run(opts) {
   var branch = opts.branch;
   var message = opts.message;
   var deploy = opts.deploy;
+  var options = opts.options;
   var url = serverName + '/api/session';
 
   debug('opts: %j', opts);
@@ -35,6 +36,10 @@ function run(opts) {
 
         if (deploy) {
           postData.type = 'TEST_AND_DEPLOY';
+        }
+
+        if (options) {
+          postData.options = options;
         }
 
         req.send(postData);

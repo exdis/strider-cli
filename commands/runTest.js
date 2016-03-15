@@ -26,6 +26,10 @@ module.exports = function(deps, parser) {
     flag: true,
     help: 'Deploy on green'
   })
+  .option('options', {
+    abbr: 'o',
+    help: 'Additional options passed to job (Must be a stringified JSON)'
+  })
   .callback(function(opts){
     if (opts.email) {
       opts.email = opts.email.toString();
@@ -47,7 +51,11 @@ module.exports = function(deps, parser) {
       opts.message = opts.message.toString();
     }
 
-    runTest(opts.email, opts.password, opts.project, opts.branch, opts.message, opts.deploy);
+    if (opts.options) {
+      opts.options = opts.options.toString();
+    }
+
+    runTest(opts.email, opts.password, opts.project, opts.branch, opts.message, opts.deploy, opts.options);
   })
   .help('Run a test and optionally deploy')
 }
