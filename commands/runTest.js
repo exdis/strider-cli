@@ -28,6 +28,7 @@ module.exports = function(deps, parser) {
   })
   .option('options', {
     abbr: 'o',
+    type: 'string',
     help: 'Additional options passed to job (Must be a stringified JSON)'
   })
   .callback(function(opts){
